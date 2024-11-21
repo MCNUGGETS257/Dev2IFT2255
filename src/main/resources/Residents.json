@@ -1,0 +1,26 @@
+[
+  {
+    "nomComplet": "Alice Dupont",
+    "courriel": "alice.dupont@example.com",
+    "motDePasse": "Password123",
+    "dateDeNaissance": "1995-05-15",
+    "telephone": "514-123-4567",
+    "adresseResidentielle": "123 Rue Principale, Montréal"
+  },
+  {
+    "nomComplet": "Bob Tremblay",
+    "courriel": "bob.tremblay@example.com",
+    "motDePasse": "securePass1",
+    "dateDeNaissance": "1980-03-25",
+    "telephone": "514-987-6543",
+    "adresseResidentielle": "456 Avenue Saint-Laurent, Montréal"
+  },
+  {
+    "nomComplet": "Charlie Lemieux",
+    "courriel": "charlie.lemieux@example.com",
+    "motDePasse": "Lemieux123",
+    "dateDeNaissance": "2000-12-12",
+    "telephone": "438-222-3333",
+    "adresseResidentielle": "789 Boulevard René-Lévesque, Montréal"
+  }
+]

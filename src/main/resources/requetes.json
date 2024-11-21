@@ -1,0 +1,14 @@
+[
+  {
+    "titreTravail": "Réparation de trottoir",
+    "descriptionDetaillee": "Le trottoir est endommagé au coin de la rue.",
+    "typeTravaux": "Réparation",
+    "dateDebutEsperee": "2024-12-01"
+  },
+  {
+    "titreTravail": "Ajout d'une piste cyclable",
+    "descriptionDetaillee": "Proposition pour ajouter une piste cyclable le long de l'avenue.",
+    "typeTravaux": "Construction",
+    "dateDebutEsperee": "2025-01-15"
+  }
+]

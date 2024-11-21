@@ -1,0 +1,9 @@
+[
+  {
+    "nom": "Test Intervenant",
+    "courriel": "test@example.com",
+    "motDePasse": "Password2",
+    "type": "Particulier",
+    "identifiantVille": "12345678"
+  }
+]

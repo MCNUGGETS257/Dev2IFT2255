@@ -1,0 +1,23 @@
+[
+  {
+    "nomComplet": "Entreprise ABC",
+    "courriel": "contact@abc.com",
+    "motDePasse": "abcSecure",
+    "type": "Entreprise publique",
+    "identifiantVille": "12345678"
+  },
+  {
+    "nomComplet": "Entrepreneur XYZ",
+    "courriel": "xyz@entrepreneur.com",
+    "motDePasse": "xyzPass123",
+    "type": "Entrepreneur privé",
+    "identifiantVille": "87654321"
+  },
+  {
+    "nomComplet": "Jean Inspecteur",
+    "courriel": "inspecteur@ville.com",
+    "motDePasse": "villeSecure",
+    "type": "Particulier",
+    "identifiantVille": "11223344"
+  }
+]

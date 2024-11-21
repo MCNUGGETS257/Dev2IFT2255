@@ -1,0 +1,10 @@
+[
+  {
+    "nom": "Test User",
+    "courriel": "test@example.com",
+    "motDePasse": "Password1",
+    "dateNaissance": "1990-01-01",
+    "telephone": "1234567890",
+    "adresse": "123 Main St"
+  }
+]
