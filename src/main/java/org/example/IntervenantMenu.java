@@ -1,13 +1,14 @@
 package org.example;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class IntervenantMenu {
-    private ArrayList<RequeteTravail> requetes = MaVille.requetesTravail;
-    private DataManager dataManager = new DataManager();
-    private ArrayList<Notification> new_notifications = ResidentMenu.getNotifications();
 
 
     public IntervenantMenu() {}
@@ -50,132 +51,60 @@ public class IntervenantMenu {
     }
 
     private void soumettreProjet(Scanner scanner) {
-        System.out.println("Titre du projet:");
-        String titre = scanner.nextLine();
-
-        System.out.println("Description du projet:");
-        String description = scanner.nextLine();
-
-        System.out.println("Type de travaux:");
-        String typeTravaux = scanner.nextLine();
-
-        ArrayList<String> quartiersAffectes = new ArrayList<>();
-        System.out.println("Entrez les quartiers affectés (tapez 'fin' pour terminer):");
-        while (true) {
-            String quartier = scanner.nextLine();
-            if (quartier.equalsIgnoreCase("fin")) {
-                break;
-            }
-            quartiersAffectes.add(quartier);
-        }
-
-        ArrayList<String> ruesAffectees = new ArrayList<>();
-        System.out.println("Entrez les rues affectées (tapez 'fin' pour terminer):");
-        while (true) {
-            String rue = scanner.nextLine();
-            if (rue.equalsIgnoreCase("fin")) {
-                break;
-            }
-            ruesAffectees.add(rue);
-        }
-
-        System.out.print("Date de début (AAAA-MM-JJ): ");
-        String dateDebut = scanner.nextLine();
-
-        System.out.print("Date de fin (AAAA-MM-JJ): ");
-        String dateFin = scanner.nextLine();
-
-        System.out.print("Horaire des travaux: ");
-        String horaireTravaux = scanner.nextLine();
-        String id = dataManager.GenerateId();
-        // Créer le projet de travaux
-        ProjetTravaux nouveauProjet = new ProjetTravaux(id,titre, description, typeTravaux, quartiersAffectes, ruesAffectees, dateDebut, dateFin, horaireTravaux);
-        dataManager.addProjet(nouveauProjet);
-
-        // Créer les entraves associées
-        System.out.println("Ajout des entraves associées au projet.");
-        while (true) {
-            System.out.println("Voulez-vous ajouter une nouvelle entrave ? (oui/non)");
-            String reponse = scanner.nextLine();
-            if (reponse.equalsIgnoreCase("non")) {
-                break;
-            }
-
-            System.out.print("Identifiant de la rue (streetId) : ");
-            String streetId = scanner.nextLine();
-
-            System.out.print("Nom court de la rue (shortName) : ");
-            String shortName = scanner.nextLine();
-
-            System.out.print("Type d'impact sur la rue (streetImpactType) : ");
-            String streetImpactType = scanner.nextLine();
-
-            // Créer une entrave
-            Entrave nouvelleEntrave = new Entrave(nouveauProjet.getId(), streetId, shortName, streetImpactType);
-
-            // Associer l'entrave au projet
-            nouveauProjet.ajouterEntrave(nouvelleEntrave);
-        }
-
-        // Ajouter une notification pour les résidents
-        String msgNotif = "Projet ajouté\nInformations sur le projet :\n" + nouveauProjet.toString();
-        Notification notification = new Notification(msgNotif);
-        new_notifications.add(notification);
-        ResidentMenu.setNotifications(new_notifications);
+        System.out.println("Soumettre Projet...");
     }
 
 
     private void mettreAJourChantier(Scanner scanner) {
-        if (dataManager.getProjets().isEmpty()) {
-            System.out.println("Aucun chantier disponible pour mise à jour.");
-            return;
-        }
-
-        System.out.println("Choisissez un chantier à mettre à jour:");
-        // liste des travaux
-        for (int i = 0; i < dataManager.getProjets().size(); i++) {
-            System.out.println((i + 1) + ". " + dataManager.getProjets().get(i).getTitre());
-        }
-
-        int choixChantier = scanner.nextInt() - 1;// rentrer numéro pour choisir le chantier à mettre à jour
-        scanner.nextLine();
-
-        if (choixChantier >= 0 && choixChantier < dataManager.getProjets().size()) {
-            ProjetTravaux projet = dataManager.getProjets().get(choixChantier);
-
-            System.out.println("Nouveau titre (laissez vide pour ne pas changer):");
-            String nouveauTitre = scanner.nextLine();
-            if (!nouveauTitre.isEmpty()) {
-                projet.setTitre(nouveauTitre);
-            }
-
-            System.out.println("Nouvelle description (laissez vide pour ne pas changer):");
-            String nouvelleDescription = scanner.nextLine();
-            if (!nouvelleDescription.isEmpty()) {
-                projet.setDescription(nouvelleDescription);
-            }
-            String msgNotif = "Chantier mise à jour\nNouveaux informations du chantier:\n"+ projet.toString();
-            Notification notification = new Notification(msgNotif);
-            new_notifications.add(notification);
-            ResidentMenu.setNotifications(new_notifications);
-        } else {
-            System.out.println("Chantier invalide.");
-        }
+       System.out.println("Mettre à jour Chantier");
     }
 
     private void consulterRequetes() {
-        int compteur = 1;
-        if (requetes.isEmpty()) {
-            System.out.println("Aucune requête de travail disponible.");
-        } else {
-            for (RequeteTravail requete : requetes) {
-                System.out.println("---- Requete "+ compteur++ +" ----");
-                System.out.println(requete.toString());
+        System.out.println("Consulter les requêtes de travail:");
+
+        // URL de l'API où récupérer les requêtes
+        String url = "http://localhost:7002/requetes"; // Modifiez l'URL selon l'API réelle
+
+        // Utiliser HttpClientMaVille pour récupérer les requêtes
+        HttpResponse<String> response = HttpClientMaVille.get(url);
+
+        // Vérifier la réponse de l'API
+        if (response != null && response.statusCode() == 200) {
+            String responseBody = response.body();
+
+            // Convertir la réponse JSON en un tableau ou liste de requêtes
+            JSONArray requetesArray = new JSONArray(responseBody);
+
+            // Vérifier si des requêtes ont été récupérées
+            if (requetesArray.length() == 0) {
+                System.out.println("Aucune requête de travail disponible.");
+            } else {
+                int compteur = 1;
+                for (int i = 0; i < requetesArray.length(); i++) {
+                    JSONObject requeteJson = requetesArray.getJSONObject(i);
+
+                    // Extraction des données de la requête
+                    String titre = requeteJson.getString("titre");
+                    String description = requeteJson.getString("description");
+                    String type = requeteJson.getString("type");
+                    String dateDebut = requeteJson.getString("dateDebut");
+
+                    // Création d'un objet RequeteTravail
+                    RequeteTravail requete = new RequeteTravail(titre, description, type, dateDebut);
+
+                    // Afficher les informations de la requête
+                    System.out.println("---- Requête " + compteur++ + " ----");
+                    System.out.println("Titre : " + requete.getTitreTravail());
+                    System.out.println("Description : " + requete.getDescriptionDetaillee());
+                    System.out.println("Type de travaux : " + requete.getTypeTravaux());
+                    System.out.println("Date début : " + requete.getDateDebutEsperee());
+                    System.out.println(); // Ligne vide pour séparer les requêtes
+                }
             }
+        } else {
+            System.out.println("Erreur lors de la récupération des requêtes.");
         }
     }
 
-    public ArrayList<RequeteTravail> getRequetes() {
-        return requetes;
-    }
 }
+

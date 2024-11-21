@@ -44,6 +44,12 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>5.0.0</version> <!-- Vérifie la dernière version -->
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

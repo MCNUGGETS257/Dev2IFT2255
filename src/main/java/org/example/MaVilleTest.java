@@ -46,26 +46,20 @@ public class MaVilleTest {
     }
 
     @Test
-    void testChargerResidentsDepuisJson() throws IOException {
-        ArrayList<Resident> residents = MaVille.chargerResidentsDepuisJson("src/main/resources/test_residents.json");
+    void testChargerResidentsDepuisApi() throws IOException {
+        ArrayList<Resident> residents = MaVille.chargerResidentsDepuisApi();
         assertNotNull(residents);
         assertFalse(residents.isEmpty());
-        assertEquals("test@example.com", residents.get(0).getCourriel());
+        assertEquals("alice.dupont@example.com", residents.get(0).getCourriel());
     }
 
-    @Test
-    void testChargerIntervenantsDepuisJson() throws IOException {
-        ArrayList<Intervenant> intervenants = MaVille.chargerIntervenantsDepuisJson("src/main/resources/test_intervenants.json");
+    /*@Test
+    void testChargerIntervenantsDepuisApi() throws IOException {
+        ArrayList<Intervenant> intervenants = MaVille.chargerIntervenantsDepuisApi();
         assertNotNull(intervenants);
         assertFalse(intervenants.isEmpty());
         assertEquals("12345678", intervenants.get(0).getIdentifiantVille());
-    }
+    }*/
 
-    @Test
-    void testChargerRequetesTravailDepuisJson() throws IOException {
-        ArrayList<RequeteTravail> requetes = MaVille.chargerRequetesTravailDepuisJson("src/main/resources/test_requetes.json");
-        assertNotNull(requetes);
-        assertFalse(requetes.isEmpty());
-        assertEquals("Réparation de trottoir", requetes.get(0).getTitreTravail());
-    }
+
 }

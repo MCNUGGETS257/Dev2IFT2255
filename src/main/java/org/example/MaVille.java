@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -14,7 +15,6 @@ import java.util.regex.Pattern;
 public class MaVille {
     public static ArrayList<Resident> residents = new ArrayList<>();
     public static ArrayList<Intervenant> intervenants = new ArrayList<>();
-    public static ArrayList<RequeteTravail> requetesTravail = new ArrayList<>();
     public static void main(String[] args) throws IOException {
         // Initialisation des listes pour les résidents et intervenants
         ArrayList<Resident> residents = chargerResidentsDepuisJson("src/main/resources/Residents.json");
@@ -212,4 +212,19 @@ public class MaVille {
         Type type = new TypeToken<ArrayList<RequeteTravail>>() {}.getType();
         return gson.fromJson(reader, type);
     }
+
+    public static ArrayList<Resident> chargerResidentsDepuisApi() throws IOException {
+        String url = "http://localhost:7002/residents"; // L'URL de l'API REST
+        HttpResponse<String> response = HttpClientMaVille.get(url);
+
+        if (response != null && response.statusCode() == 200) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Resident>>() {}.getType();
+            return gson.fromJson(response.body(), type);
+        } else {
+            System.out.println("Erreur de récupération des résidents.");
+            return new ArrayList<>();
+        }
+    }
+
 }
